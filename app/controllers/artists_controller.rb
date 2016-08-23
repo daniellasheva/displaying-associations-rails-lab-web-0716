@@ -1,8 +1,11 @@
 class ArtistsController < ApplicationController
   def index
+    @artists=Artist.all
   end
 
   def show
+    @artist=Artist.find(params[:id])
+    @songs=@artist.songs
   end
 
   def new
@@ -11,12 +14,13 @@ class ArtistsController < ApplicationController
 
   def create
     @artist = Artist.new(artist_params)
+    @artist.save
 
-    if @artist.save
-      redirect_to @artist
-    else
-      render :new
-    end
+    # if @artist.save
+    #   redirect_to @artist
+    # else
+    #   render :new
+    # end
   end
 
   def edit
@@ -40,6 +44,10 @@ class ArtistsController < ApplicationController
     @artist.destroy
     flash[:notice] = "Artist deleted."
     redirect_to artists_path
+  end
+
+  def song_count
+    @song_count=Song.all.count
   end
 
   private
